@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>BCRDH_logo.png</file>
+  </qresource>
+</RCC>

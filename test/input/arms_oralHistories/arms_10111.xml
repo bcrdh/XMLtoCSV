@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Armstrong families - Fred Hitt</title>
+    </titleInfo>
+    <titleInfo type = "alternative">
+        <title>Frederick Hitt</title>
+    </titleInfo>
+    <originInfo>
+        <publisher>PubOrig</publisher>
+        <dateIssued keyDate="yes" encoding="w3cdtf">May-79</dateIssued>
+    </originInfo>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Hitt</namePart>
+            <namePart type="given">Fred</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Hoffman</namePart>
+            <namePart type="given">Dustin</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Lange</namePart>
+            <namePart type="given">Jessica</namePart>
+        </name>
+    </subject>
+    <name type = "personal">
+        <namePart type ="family">MacLachlan</namePart>
+        <namePart type ="given">Kyle</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <name type="personal">
+        <namePart type="family">Wise</namePart>
+        <namePart type="given">Ray</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>CorpContrib</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>Armstrong Spallumcheen Museum and Arts Society</namePart>
+        <role>
+            <roleTerm authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <physicalDescription>
+        <extent>1 sound recording (20 min.)</extent>
+    </physicalDescription>
+    <abstract>Life of Fred Hitt and his family who immigrated to Canada from England. Interview details his and his brothers' early days working in Calgary, Alberta and eventual move to Armstrong, B.C in 1913 where he purchased a small farm. Interview of his accounts of Armstrong, B.C. </abstract>
+    <subject>
+        <topic>Farming</topic>
+    </subject>
+    <subject>
+        <topic>Subject2</topic>
+    </subject>
+    <subject>
+        <topic>Subject3</topic>
+    </subject>
+    <subject>
+        <topic>Subject4</topic>
+    </subject>
+    <subject>
+        <topic>Subject5</topic>
+    </subject>
+    <subject>
+        <geographic>Armstrong (B.C.)</geographic>
+    </subject>
+    <subject>
+        <temporal>1980-1985</temporal>
+    </subject>
+    <language>
+        <languageTerm>English</languageTerm>
+    </language>
+    <language>
+        <languageTerm>Spanish</languageTerm>
+    </language>
+    <note>This is a fabricated metadata record for testing purposes only</note>
+    <genre authority="marcgt">interview</genre>
+    <typeOfResource>sound</typeOfResource>
+    <physicalDescription>
+        <internetMediaType>audio/mp2</internetMediaType>
+    </physicalDescription>
+    <identifier type="access">ARMS_10_02b_ed.mp3</identifier>
+    <identifier type="local">87-122</identifier>
+    <location>
+        <physicalLocation>Armstrong Spallumcheen Museum and Arts Society</physicalLocation>
+    </location>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Audio provided for research and reference use only. Permission to publish, copy, or otherwise use these recordings must be obtained from the Armstrong Spallumcheen Museum and Arts Society: http://armstrongspallmuseumart.com/</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3.1</recordOrigin>
+        <recordCreationDate>2020-02-13</recordCreationDate>
+    </recordInfo>
+</mods>

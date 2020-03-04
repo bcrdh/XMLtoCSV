@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Boat/Summit Lake, ca. 1955-1965</title>
+    </titleInfo>
+    <titleInfo type="alternative">
+        <title>AltTitle</title>
+    </titleInfo>
+    <originInfo>
+        <dateIssued encoding="w3cdtf" keyDate="yes">1965</dateIssued>
+        <publisher>PubOrig</publisher>
+    </originInfo>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Swanson</namePart>
+            <namePart type="given">John</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Boden</namePart>
+            <namePart type="given">Jack</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Yano</namePart>
+            <namePart type="given">Nobby</namePart>
+        </name>
+    </subject>
+	<subject>
+		<name type="corporate">
+			<namePart>Kettle Valley Railway</namePart>
+		</name>
+	</subject>
+	<subject>
+		<temporal>1950-1960</temporal>
+	</subject>      
+	<name type="personal">
+		<namePart type="given">Jim</namePart>
+		<namePart type="family">Jarmusch</namePart>
+		<role>
+			<roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+		</role>
+	</name>    
+    <name type = "personal">
+        <namePart type ="family">Shiino</namePart>
+        <namePart type ="given">Ichiro</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <name type = "personal">
+        <namePart type="family">Jim</namePart>
+        <namePart type="given">Jim</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>Tolko</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>Celgar</namePart>
+        <role>
+            <roleTerm authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <physicalDescription>
+        <extent>1 film reel : col.</extent>
+    </physicalDescription>
+    <abstract>A silent film containing short clips filmed in the Nakusp area by Ichiro Shiino of Nakusp, ca. late 1950s - early 1960s. I. (0:00) Celgar tug crew members feeds bear cub on shore from the deck of the Celgar tug Vanstone near Vipond Creek across Upper Arrow Lake from Nakusp. II. (1:57) Kokanee spawning in Kuskanax Creek at Nakusp. III. (3:31) Activities at the government wharf on Upper Arrow Lake at Nakusp, including the landing of a float plane, recreational boating and waterskiing, and the landing of the ferry MV Lardeau. IV. (6:39) A trip to Box Lake and Summit Lake southeast of Nakusp, including footage of swimming at Summit Lake Provincial Park and the Yano family of Nakusp boating and fishing on the lake.</abstract>
+    <subject>
+        <topic>Airplanes</topic>
+    </subject>
+    <subject>
+        <topic>Bears</topic>
+    </subject>
+    <subject>
+        <topic>Fish</topic>
+    </subject>
+    <subject>
+        <topic>Boats</topic>
+    </subject>
+    <subject>
+        <topic>Lakes &amp; ponds</topic>
+    </subject>
+    <subject>
+        <geographic>Nakusp (B.C.)</geographic>
+    </subject>
+    <language>
+        <languageTerm>English</languageTerm>
+    </language>
+    <language>
+        <languageTerm>Japanese</languageTerm>
+    </language>
+    <genre authority="aat">home movies</genre>
+    <typeOfResource>moving image</typeOfResource>
+    <physicalDescription>
+        <internetMediaType>video/mp4</internetMediaType>
+    </physicalDescription>
+    <identifier type="access">01_2012_10_10_07_57_35_ed.mp4</identifier>
+    <identifier type="local">01 2012_10_10_07_57_35</identifier>
+    <note>This is a fabricated metadata record for testing purposes only</note>
+    <location>
+        <physicalLocation>Arrow Lakes Historical Society</physicalLocation>
+    </location>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Images provided for research and reference use only. Permission to publish, copy, or otherwise use these images must be obtained from the Arrow Lakes Historical Society: https://alhs-archives.com/</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3.1</recordOrigin>
+        <recordCreationDate>2020-02-13</recordCreationDate>
+    </recordInfo>
+    <relatedItem type="host">
+        <titleInfo>
+            <title>Ichiro Shiino video fonds</title>
+        </titleInfo>
+    </relatedItem>
+    <relatedItem type="host">
+        <identifier type="PID">alhs:shiino</identifier>
+    </relatedItem>
+</mods>

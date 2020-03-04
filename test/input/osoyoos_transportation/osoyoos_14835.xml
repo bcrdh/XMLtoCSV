@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Osoyoos climatological station register, 1954-1956</title>
+    </titleInfo>
+    <titleInfo type = "alternative">
+        <title>Dept. of Transportation  climate register, Osoyoos B.C.</title>
+    </titleInfo>
+    <originInfo>
+        <publisher>PubOriginal</publisher>
+        <dateIssued keyDate="yes" encoding="w3cdtf">1954-06</dateIssued>
+    </originInfo>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Vox</namePart>
+            <namePart type="given">Bono</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Edge</namePart>
+            <namePart type="given">The</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Clayton</namePart>
+            <namePart type="given">Adam</namePart>
+        </name>
+    </subject>
+	<subject>
+		<name type="corporate">
+			<namePart>Walt Disney Corp.</namePart>
+		</name>
+	</subject>    
+    <name type = "personal">
+        <namePart type ="family">LastName</namePart>
+        <namePart type ="given">FirstName</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <name type = "personal">
+        <namePart type="family">Graf</namePart>
+        <namePart type="given">Walter</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>CorpContrib</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>Government of Canada, Department of Transportation</namePart>
+        <role>
+            <roleTerm authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+	<name>
+		<namePart type="given">Walter</namePart>
+		<namePart type="family">Graf</namePart>
+		<role>
+			<roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+		</role>
+	</name>    
+    <physicalDescription>
+        <extent>112 pp.</extent>
+    </physicalDescription>
+    <abstract>Register consists of various instructions for station activities and instrumentation, a letter from the Director of the Department of Transport, records of precipitation and other weather at Osoyoos, B.C., weather charts, frost and wind warning service records covering the regions of the South Thompson, Okanagan, and Similkameen valleys, and thermometer correction charts.</abstract>
+    <subject>
+        <topic>Weather</topic>
+    </subject>
+    <subject>
+        <topic>Meteorology</topic>
+    </subject>
+    <subject>
+        <topic>Meteorological instruments</topic>
+    </subject>
+    <subject>
+        <topic>Weather stations</topic>
+    </subject>
+    <subject>
+        <topic>Subject5</topic>
+    </subject>
+    <subject>
+        <geographic>Osoyoos (B.C.)</geographic>
+    </subject>
+    <subject>
+        <temporal>1954-1956</temporal>
+    </subject>
+    <language>
+        <languageTerm>English</languageTerm>
+    </language>
+    <language>
+        <languageTerm>Klingon</languageTerm>
+    </language>
+    <note>This is a fabricated metadata record for testing purposes only</note>
+    <genre authority="aat">records (documents)</genre>
+    <typeOfResource>text</typeOfResource>
+    <physicalDescription>
+        <internetMediaType>application/pdf</internetMediaType>
+    </physicalDescription>
+    <identifier type="access">OSOY_17_001_ed.pdf</identifier>
+    <identifier type="local">MS 12</identifier>
+    <location>
+        <physicalLocation>Osoyoos and District Museum and Archives</physicalLocation>
+    </location>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Images provided for research and reference use only. Permission to publish, copy, or otherwise use these images must be obtained from Osoyoos and District Museum and Archives: http://www.osoyoosmuseum.ca/</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3.1</recordOrigin>
+        <recordCreationDate>2020-02-13</recordCreationDate>
+    </recordInfo>
+    <relatedItem type="host">
+        <titleInfo>
+            <title>Government of Canada, Dept. of Transportation fonds</title>
+        </titleInfo>
+    </relatedItem>
+    <relatedItem type="host">
+        <identifier type="PID">osoyoos:transportation</identifier>
+    </relatedItem>
+</mods>

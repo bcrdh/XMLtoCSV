@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Kootenay Lake Historical Society executive at entrance to S.S. Moyie Museum</title>
+    </titleInfo>
+    <originInfo>
+        <dateIssued encoding="w3cdtf" keyDate="yes">1982-07-24</dateIssued>
+    </originInfo>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Spears</namePart>
+            <namePart type="given">Britney</namePart>
+        </name>
+    </subject>    
+    <subject>
+        <name type="corporate">
+            <namePart>S.S. Moyie Museum</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="corporate">
+            <namePart>S.S. Moyie Museum</namePart>
+        </name>
+    </subject>    
+    <physicalDescription>
+        <extent>1 photograph : black and white</extent>
+    </physicalDescription>
+    <abstract>L to R: Margaret Jardine, Byron Willis, June Griswold, Jack Bryant, Betty Tate, Pearl Abey, Jack Morris.</abstract>
+    <subject>
+        <topic>Group portraits</topic>
+    </subject>
+    <subject>
+        <topic>Organizations</topic>
+    </subject>
+    <subject>
+        <topic>Museums &amp; galleries</topic>
+    </subject>
+    <subject>
+        <geographic>Kaslo (B.C.)</geographic>
+    </subject>
+    <genre authority="aat">photographs</genre>
+    <typeOfResource>still image</typeOfResource>
+    <identifier type="access">KLHS_01_988_016_0004_ed.tif</identifier>
+    <identifier type="local">988_016_0004</identifier>
+    <location>
+        <physicalLocation>Kootenay Lake Historical Society</physicalLocation>
+    </location>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Images provided for research and reference use only. Permission to publish, copy, or otherwise use these images must be obtained from the Kootenay Lake Historical Society: https://www.klhs.bc.ca/archives</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3</recordOrigin>
+        <recordCreationDate>2019-12-11</recordCreationDate>
+    </recordInfo>
+    <relatedItem type="host">
+        <titleInfo>
+            <title>Kootenay Lake Historical Society Photograph Collection</title>
+        </titleInfo>
+    </relatedItem>
+    <relatedItem type="host">
+        <identifier type="PID">klhs:photographs</identifier>
+    </relatedItem>
+</mods>

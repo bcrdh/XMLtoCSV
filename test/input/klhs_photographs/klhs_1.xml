@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+	xmlns:mods="http://www.loc.gov/mods/v3" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<titleInfo>
+		<title>Doug Jerome on S.S. Moyie, ca. 1928</title>
+	</titleInfo>
+	<titleInfo type="alternative">
+		<title>AltTitle1</title>
+	</titleInfo>	
+
+	<originInfo>
+		<dateIssued encoding="w3cdtf" keyDate="yes">1928</dateIssued>
+	</originInfo>
+	<subject>
+		<name type="personal">
+			<namePart type="family">Jerome</namePart>
+			<namePart type="given">Doug</namePart>
+		</name>
+	</subject>
+	<subject>
+		<name type="personal">
+			<namePart type="family">Sample</namePart>
+			<namePart type="given">Sample</namePart>
+		</name>
+	</subject>
+	<subject>
+		<name type="personal">
+			<namePart type="family">Reagan</namePart>
+			<namePart type="given">Ronnie</namePart>
+		</name>
+	</subject>		
+	<name type="personal">
+		<namePart type="family">Sample</namePart>
+		<namePart type="given">Sample1</namePart>
+		<role>
+			<roleTerm type="text" authority="marcrelator">creator</roleTerm>
+		</role>		
+	</name>
+	<name type="corporate">
+		<namePart>Sample</namePart>
+		<role>
+			<roleTerm type="text" authority="marcrelator">creator</roleTerm>
+		</role>
+	</name>
+	<name type="corporate">
+		<namePart>Sample</namePart>
+		<role>
+			<roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+		</role>
+	</name>	
+	<name type="personal">
+		<namePart type="given">Sample1a</namePart>
+		<namePart type="family">Sample</namePart>
+		<role>
+			<roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+		</role>
+	</name>
+	<subject>
+		<name type="corporate">
+			<namePart>S.S. Moyie</namePart>
+		</name>
+	</subject>
+	<subject>
+		<geographic>
+			<cartographics>Sample coordinates</cartographics>
+		</geographic>
+	</subject>
+	<physicalDescription>
+		<extent>1 photograph : black and white</extent>
+	</physicalDescription>
+	<abstract>S.S. Moyie crew member Doug Jerome was Dot (Thelma) Morris' uncle.</abstract>
+	<subject>
+		<topic>Steamboats</topic>
+	</subject>
+	<subject>
+		<topic>Portraits</topic>
+	</subject>
+	<subject>
+		<topic>Boats</topic>
+	</subject>
+	<subject>
+		<topic>Sample</topic>
+	</subject>
+	<subject>
+		<topic>Sample</topic>
+	</subject>		
+	<subject>
+		<name type="corporate">
+			<namePart>S.S. Moyie</namePart>
+		</name>
+	</subject>	
+	<subject>
+		<geographic>Kootenay Region (B.C.)</geographic>
+	</subject>
+	<subject>
+		<temporal>1980-1990</temporal>
+	</subject>
+	<genre authority="marcgt">photographs</genre>
+	<note>This is a sample.</note>
+	<languageTerm type="text">English</languageTerm>
+	<languageTerm type="text">French</languageTerm>
+	<physicalDescription>
+		<internetMediaType>image/jp2</internetMediaType>
+	</physicalDescription>
+	<identifier type="isbn">Sample</identifier>
+	<classification authority="lcc">Sample</classification>
+	<identifier type="uri">Sample</identifier>
+	<originInfo><publisher>Sample</publisher></originInfo>
+	<typeOfResource>still image</typeOfResource>
+	<identifier type="access">KLHS_01_988_016_0001_ed.tif</identifier>
+	<identifier type="local">988_016_0001</identifier>
+	<location>
+		<physicalLocation>Kootenay Lake Historical Society</physicalLocation>
+	</location>
+	<accessCondition type="use and reproduction" displayLabel="Restricted">Images provided for research and reference use only. Permission to publish, copy, or otherwise use these images must be obtained from the Kootenay Lake Historical Society: https://www.klhs.bc.ca/archives</accessCondition>
+	<accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+	<recordInfo>
+		<recordOrigin>4.3</recordOrigin>
+		<recordCreationDate>2019-12-11</recordCreationDate>
+	</recordInfo>
+	<relatedItem type="host">
+		<titleInfo>
+			<title>Kootenay Lake Historical Society Photograph Collection</title>
+		</titleInfo>
+	</relatedItem>
+	<relatedItem type="host">
+		<identifier type="PID">klhs:photographs</identifier>
+	</relatedItem>
+</mods>

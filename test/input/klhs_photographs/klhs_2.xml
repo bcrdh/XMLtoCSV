@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Ray Norberg and Jack Morris, badminton doubles champions</title>
+    </titleInfo>
+    <abstract>Sample</abstract>
+    <originInfo>
+        <dateIssued encoding="w3cdtf" keyDate="yes">1958</dateIssued>
+    </originInfo>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Norberg</namePart>
+            <namePart type="given">Ray</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Morris</namePart>
+            <namePart type="given">Jack</namePart>
+        </name>
+    </subject>
+	<subject>
+		<name type="corporate">
+			<namePart>Sample</namePart>
+		</name>
+	</subject>    
+    <physicalDescription>
+        <extent>1 photograph : black and white</extent>
+    </physicalDescription>
+    <subject>
+        <topic>Portraits</topic>
+    </subject>
+    <subject>
+        <topic>Sports</topic>
+    </subject>
+    <subject>
+        <topic>Badminton</topic>
+    </subject>    
+    <subject>
+        <geographic>Kootenay Region (B.C.)</geographic>
+    </subject>
+    <genre authority="aat">photographs</genre>
+    <typeOfResource>still image</typeOfResource>
+    <identifier type="access">KLHS_01_988_016_0002_ed.tif</identifier>
+    <identifier type="local">988_016_0002</identifier>
+    <location>
+        <physicalLocation>Kootenay Lake Historical Society</physicalLocation>
+    </location>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Images provided for research and reference use only. Permission to publish, copy, or otherwise use these images must be obtained from the Kootenay Lake Historical Society: https://www.klhs.bc.ca/archives</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3</recordOrigin>
+        <recordCreationDate>2019-12-11</recordCreationDate>
+    </recordInfo>
+    <relatedItem type="host">
+        <titleInfo>
+            <title>Kootenay Lake Historical Society Photograph Collection</title>
+        </titleInfo>
+    </relatedItem>
+    <relatedItem type="host">
+        <identifier type="PID">klhs:photographs</identifier>
+    </relatedItem>
+</mods>

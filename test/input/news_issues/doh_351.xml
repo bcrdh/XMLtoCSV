@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Kelowna Clarion &amp; Okanagan Advocate, July 28, 1904</title>
+    </titleInfo>
+    <originInfo>
+        <dateIssued encoding="w3cdtf" keyDate="yes">1904-07-28</dateIssued>
+    </originInfo>
+    <part>
+        <detail type="volume">
+            <number>1</number>
+        </detail>
+        <detail type="issue">
+            <number>1</number>
+        </detail>
+    </part>
+    <identifier type="uuid">30e4329d-71ea-4ea7-95b3-8c22762ca28b</identifier>
+    <identifier type="access">1904-07-28</identifier>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Images provided for research and reference use only. Permission to publish, copy, or otherwise use these images must be obtained from opyright holder: The Okanagan Valley Newspaper Group, www.kelownadailycourier.ca</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Creative Commons license">https://creativecommons.org/licenses/by-nc-nd/4.0/
+    </accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3</recordOrigin>
+        <recordCreationDate>2019-11-30</recordCreationDate>
+    </recordInfo>
+</mods>

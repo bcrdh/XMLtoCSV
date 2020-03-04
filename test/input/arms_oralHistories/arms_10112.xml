@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>History of banks in Armstrong - Mat Hassen and Jean Gill</title>
+    </titleInfo>
+    <titleInfo type = "alternative">
+        <title>The Hassens</title>
+    </titleInfo>
+    <originInfo>
+        <publisher>PubOrig</publisher>
+        <dateIssued keyDate="yes" encoding="w3cdtf">2001-06-19</dateIssued>
+    </originInfo>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Hassen</namePart>
+            <namePart type="given">Mat</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Gill</namePart>
+            <namePart type="given">Jean</namePart>
+        </name>
+    </subject>
+    <subject>
+        <name type="personal">
+            <namePart type="family">Streep</namePart>
+            <namePart type="given">Meryl</namePart>
+        </name>
+    </subject>
+    <name type = "personal">
+        <namePart type ="family">Lee</namePart>
+        <namePart type ="given">Sheryl </namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <name type="personal">
+        <namePart type="family">Ashbook</namePart>
+        <namePart type="given">Dana</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>CorpContrib</namePart>
+        <role>
+            <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+        </role>
+    </name>
+    <name type="corporate">
+        <namePart>Armstrong Spallumcheen Museum and Arts Society</namePart>
+        <role>
+            <roleTerm authority="marcrelator">creator</roleTerm>
+        </role>
+    </name>
+    <physicalDescription>
+        <extent>1 sound recording (1 hr. 32 min.)</extent>
+    </physicalDescription>
+    <abstract>An interview with Mat Hassen about the history of the first banks and their operations in Armstrong, B.C. Also details his early life growing up in Armstrong and family history. The Bank of Montreal was the first bank to be established in Armstrong, B.C. An interview with Jean Gill about the history of the first banks and their operations in Armstrong, B.C. She was the first woman employed in the bank in the early days of banking. Her father had encouraged her to apply after there was a shortage of employees at the bank due to WWII. To learn more read Okanagan History Sixty-sixth report of the Okanagan Historical Society pg. 93-94 available here: https://open.library.ubc.ca/collections/ohs/items/1.0132242</abstract>
+    <subject>
+        <topic>Banks and banking</topic>
+    </subject>
+    <subject>
+        <topic>Subject2</topic>
+    </subject>
+    <subject>
+        <topic>Subject3</topic>
+    </subject>
+    <subject>
+        <topic>Subject4</topic>
+    </subject>
+    <subject>
+        <topic>Subject5</topic>
+    </subject>
+    <subject>
+        <geographic>Armstrong (B.C.)</geographic>
+    </subject>
+    <subject>
+        <temporal>1980-1985</temporal>
+    </subject>
+    <language>
+        <languageTerm>English</languageTerm>
+    </language>
+    <language>
+        <languageTerm>Spanish</languageTerm>
+    </language>
+    <note>This is a fabricated metadata record for testing purposes only</note>
+    <genre authority="marcgt">interview</genre>
+    <typeOfResource>sound</typeOfResource>
+    <physicalDescription>
+        <internetMediaType>audio/mp2</internetMediaType>
+    </physicalDescription>
+    <identifier type="access">ARMS_10_07_Banks_ed</identifier>
+    <location>
+        <physicalLocation>Armstrong Spallumcheen Museum and Arts Society</physicalLocation>
+    </location>
+    <accessCondition type="use and reproduction" displayLabel="Restricted">Audio provided for research and reference use only. Permission to publish, copy, or otherwise use these recordings must be obtained from the Armstrong Spallumcheen Museum and Arts Society: http://armstrongspallmuseumart.com/</accessCondition>
+    <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+    <recordInfo>
+        <recordOrigin>4.3.1</recordOrigin>
+        <recordCreationDate>2020-02-13</recordCreationDate>
+    </recordInfo>
+</mods>

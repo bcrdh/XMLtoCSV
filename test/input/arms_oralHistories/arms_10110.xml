@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <titleInfo>
+    <title>Armstrong families - Robert Coldicott interview</title>
+  </titleInfo>
+  <titleInfo type="alternative">
+    <title>Caldicott</title>
+  </titleInfo>
+  <originInfo>
+    <publisher>PubOrig</publisher>
+    <dateIssued keyDate="yes" encoding="w3cdtf">09-02-1979</dateIssued>
+  </originInfo>
+  <subject>
+    <name type="personal">
+      <namePart type="family">Coldicott</namePart>
+      <namePart type="given">Robert</namePart>
+    </name>
+  </subject>
+  <subject>
+    <name type="personal">
+      <namePart type="family">Zabriskie</namePart>
+      <namePart type="given">Grace</namePart>
+    </name>
+  </subject>
+  <subject>
+    <name type="personal">
+      <namePart type="family">Murray</namePart>
+      <namePart type="given">Bill</namePart>
+    </name>
+  </subject>
+  <name type="personal">
+    <namePart type="family">Lynch</namePart>
+    <namePart type="given">David</namePart>
+    <role>
+      <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+    </role>
+  </name>
+  <name type="personal">
+    <namePart type="family">Silva</namePart>
+    <namePart type="given">Frank</namePart>
+    <role>
+      <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+    </role>
+  </name>
+  <name type="corporate">
+    <namePart>CorpContrib</namePart>
+    <role>
+      <roleTerm type="text" authority="marcrelator">contributor</roleTerm>
+    </role>
+  </name>
+  <name type="corporate">
+    <namePart>Armstrong Spallumcheen Museum and Arts Society</namePart>
+    <role>
+      <roleTerm authority="marcrelator">creator</roleTerm>
+    </role>
+  </name>
+  <subject>
+    <name type="corporate" >
+      <namePart>CorpSubj</namePart> 
+    </name>
+  </subject>
+  <subject>
+    <name type="corporate" >
+      <namePart>CorpSubj2</namePart> 
+    </name>
+  </subject>  
+  <physicalDescription>
+    <extent>1 sound recording (30 min.)</extent>
+  </physicalDescription>
+  <abstract>Life of Robert Coldicott and his family who immigrated to Canada in Spring of 1905. Details his early days growing up in Haney, B.C., where they farmed fruit and berries. Details their move and life in Armstrong, B.C. where they purchased 50 acres of bushland and established their home. Talks about his school days, community events, and neighbouring Armstrong families. </abstract>
+  <subject>
+    <topic>Emigration &amp; immigration</topic>
+  </subject>
+  <subject>
+    <topic>Subject2</topic>
+  </subject>
+  <subject>
+    <topic>Subject3</topic>
+  </subject>
+  <subject>
+    <topic>Subject4</topic>
+  </subject>
+  <subject>
+    <topic>Subject5</topic>
+  </subject>
+  <subject>
+    <geographic>Armstrong (B.C.)</geographic>
+  </subject>
+  <subject>
+    <temporal>1980-1985</temporal>
+  </subject>
+  <language>
+    <languageTerm>English</languageTerm>
+  </language>
+  <language>
+    <languageTerm>Spanish</languageTerm>
+  </language>
+  <note>This is a fabricated metadata record for testing purposes only</note>
+  <genre authority="marcgt">interview</genre>
+  <relatedItem type="host"><titleInfo><title>Armstrong Oral Histories</title></titleInfo></relatedItem>
+  <relatedItem type="host"><identifier type="PID">arms:oralhistories</identifier></relatedItem>
+  <typeOfResource>sound</typeOfResource>
+  <physicalDescription>
+    <internetMediaType>audio/mp2</internetMediaType>
+  </physicalDescription>
+  <identifier type="access">ARMS_10_02a_ed.mp3</identifier>
+  <identifier type="local">87-122</identifier>
+  <location>
+    <physicalLocation>Armstrong Spallumcheen Museum and Arts Society</physicalLocation>
+  </location>
+  <accessCondition type="use and reproduction" displayLabel="Restricted">Audio provided for research and reference use only. Permission to publish, copy, or otherwise use these recordings must be obtained from the Armstrong Spallumcheen Museum and Arts Society: http://armstrongspallmuseumart.com/</accessCondition>
+  <accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/CNE/1.0/</accessCondition>
+  <recordInfo>
+    <recordOrigin>4.3.1</recordOrigin>
+    <recordCreationDate>2020-02-13</recordCreationDate>
+  </recordInfo>
+</mods>
