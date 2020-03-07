@@ -45,6 +45,21 @@ def convert_date(dt_str, letter_date):
     return revised
 
 
+def is_newspaper_issue(soup):
+    """
+    Identifies whether a file is a newspaper MODS
+    :param soup: the beautifulsoup object of the files contents
+    :return: a boolean indicating whether it is a newspaper
+    """
+    return soup.find('detail', {'type': 'volume'})
+
+def convert_newspaper_to_csv(soup):
+    col_names = ['Key', 'Filename', 'Identifier', 'IssueTitle', 'DateCreated', 'Volume',
+            'Issue', 'Rights', 'CreativeCommons_URI', 'RightsStatement']
+
+
+
+
 def convert_to_csv(input_folder, output_folder, output_file):
     """
     Converts a folder of XML files into a single CSV file
@@ -87,6 +102,11 @@ def convert_to_csv(input_folder, output_folder, output_file):
 
         # Load contents into beautifulsoup to parse xml
         soup = BeautifulSoup(contents, 'xml')
+
+        # Identify whether it is a newspaper issue title
+        if is_newspaper_issue(soup):
+
+            continue
 
         if soup.find('dateIssued'):
             date_cr = soup.find('dateIssued').getText().strip()
