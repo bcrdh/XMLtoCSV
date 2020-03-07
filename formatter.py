@@ -1,6 +1,6 @@
 import os
 
-input_file = 'test' + os.sep + 'output' + os.sep + 'klhs_photographs.csv'
+input_file = 'test' + os.sep + 'output' + os.sep + 'news_issues.csv'
 
 with open(input_file, 'r') as f:
     col_names = f.readline().rstrip('\n')
