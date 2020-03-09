@@ -45,17 +45,44 @@ def convert_date(dt_str, letter_date):
     return revised
 
 
-def is_newspaper_issue(soup):
+def save(df, path):
+    """
+    Saves dataframe to given path
+    :param df: the dataframe to save
+    :param path: the save path
+    :return: None
+    """
+    df.to_csv(path, encoding='utf-8', index=False)
+
+
+def is_newspaper_issue(filename):
     """
     Identifies whether a file is a newspaper MODS
-    :param soup: the beautifulsoup object of the files contents
+    :param filename: the MODS XML file name
     :return: a boolean indicating whether it is a newspaper
     """
+    with open(filename, "r", encoding="utf8") as infile:
+        contents = infile.read()
+
+    # Load contents into beautifulsoup to parse xml
+    soup = BeautifulSoup(contents, 'xml')
     return soup.find('detail', {'type': 'volume'})
 
-def convert_newspaper_to_csv(soup):
-    col_names = ['Key', 'Filename', 'Identifier', 'IssueTitle', 'DateCreated', 'Volume',
-            'Issue', 'Rights', 'CreativeCommons_URI', 'RightsStatement']
+
+def convert_newspapers_to_csv(files):
+    news_col_names = [
+        'key', 'Title', 'AlternativeTitle', 'Creator1_Given', 'Creator1_Family',
+        'CorporateCreator', 'Contributor1_Given', 'Contributor1_Family',
+        'CorporateContributor', 'Publisher_Original', 'DateCreated', 'Description',
+        'CorporateSubject1', 'Genre', 'GenreAuthority', 'Type', 'internetMediaType',
+        'Language', 'Notes', 'Source', 'Rights', 'CreativeCommons_URI', 'RightsStatement',
+        'relatedItem_Title', 'relatedItem_PID', 'DateIssued_Start', 'DatedIssued_End', 'DateRange',
+        'Frequency', 'Abstract', 'Publisher_Location', 'IssueTitle', 'Volume', 'Issue'
+    ]
+
+    # Create data frame
+    df = pd.DataFrame(columns=news_col_names)
+    df.append(pd.Series(dtype=float), ignore_index=True)
 
 
 
@@ -86,12 +113,18 @@ def convert_to_csv(input_folder, output_folder, output_file):
 
     path = input_folder
 
-    # Create data frame
-    df = pd.DataFrame(columns=col_names)
-    df.append(pd.Series(dtype=float), ignore_index=True)
     # Sort the file names in order to make CSV more organized and also easier
     # for unit tests
     files = sorted([filename for filename in glob.iglob(os.path.join(path, '*.xml'))])
+
+    # Check newspaper
+    if is_newspaper_issue(files[0]):
+        convert_newspapers_to_csv(files)
+        return  # Don't continue
+
+    # Create data frame
+    df = pd.DataFrame(columns=col_names)
+    df.append(pd.Series(dtype=float), ignore_index=True)
 
     # Used to keep track of row number in data frame
     i = 0
@@ -102,11 +135,6 @@ def convert_to_csv(input_folder, output_folder, output_file):
 
         # Load contents into beautifulsoup to parse xml
         soup = BeautifulSoup(contents, 'xml')
-
-        # Identify whether it is a newspaper issue title
-        if is_newspaper_issue(soup):
-
-            continue
 
         if soup.find('dateIssued'):
             date_cr = soup.find('dateIssued').getText().strip()
@@ -408,8 +436,6 @@ def convert_to_csv(input_folder, output_folder, output_file):
 
         i = i + 1
 
-    file_name = output_file
-    savePath = output_folder
-    dest = os.path.join(savePath, file_name)
+    save(df, os.path.join(output_folder, output_file))
     print(df)
-    df.to_csv(dest, encoding='utf-8', index=False)
+
