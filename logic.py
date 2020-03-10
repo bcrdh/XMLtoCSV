@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import glob
 import datetime
 import re
+from mappings import mappings
+from mappings import reset
 
 
 def multi_hdg_mkr(pt1, num, pt2):
@@ -84,6 +86,17 @@ def convert_newspapers_to_csv(files):
     df = pd.DataFrame(columns=news_col_names)
     df.append(pd.Series(dtype=float), ignore_index=True)
 
+    i = 0  # Keep track of row number in df
+    for filename in files:
+        # Read file contents
+        with open(filename, "r", encoding="utf8") as infile:
+            contents = infile.read()
+
+        # Load contents into beautifulsoup to parse xml
+        soup = BeautifulSoup(contents, 'xml')
+
+
+
 
 
 
@@ -107,9 +120,6 @@ def convert_to_csv(input_folder, output_folder, output_file):
      'Language2', 'Notes', 'AccessIdentifier', 'LocalIdentifier', 'ISBN', 'Classification', 'URI', 'Source', 'Rights',
      'CreativeCommons_URI', 'RightsStatement', 'relatedItem_Title', 'relatedItem_PID', 'recordCreationDate', 'recordOrigin'
     ]
-
-    pattern1 = r'^[A-Z][a-z]{2}-\d{2}$'  # %b-%Y date (e.g. Jun-17)
-    pattern2 = r'^\d{2}-\d{2}-[1-2]\d{3}$'  # %d-%m-%Y date (e.g. 21-01-1917)
 
     path = input_folder
 
@@ -136,203 +146,156 @@ def convert_to_csv(input_folder, output_folder, output_file):
         # Load contents into beautifulsoup to parse xml
         soup = BeautifulSoup(contents, 'xml')
 
-        if soup.find('dateIssued'):
-            date_cr = soup.find('dateIssued').getText().strip()
-        else:
-            date_cr = "n.d."
-
-        # Fix badly formatted dates (either of the two patterns declared above will be fixed)
-        if re.match(pattern1, date_cr):
-            date_cr = convert_date(date_cr, True)
-        elif re.match(pattern2, date_cr):
-            date_cr = convert_date(date_cr, False)
-
         # Set DateCreated column
-        df.at[i, 'DateCreated'] = date_cr
-
-        # Identify the repo and num from the filename in the path
-        path_splitted = filename.split(os.sep)
-        # Get last index of split (i.e. the filename) and split
-        obj_i_dpts = path_splitted[-1].rstrip('.xml').split("_")
-        repo = obj_i_dpts[0]
-        num = obj_i_dpts[1]
+        df.at[i, 'DateCreated'] = mappings['DateCreated'](soup)
 
         # Key
-        df.at[i, 'key'] = str(i+1)
+        df.at[i, 'key'] = mappings['key'](i)
 
         # Arca PID
-        pid = repo + '_' + num
-        df.at[i, 'PID'] = pid.strip()
+        df.at[i, 'PID'] = mappings['PID'](filename)
 
         # Link to Image
-        df.at[i, 'imageLink'] = "https://doh.arcabc.ca/islandora/object/" + repo + "%3A" + num
+        df.at[i, 'imageLink'] = mappings['imageLink'](filename)
 
-        # alternativeTitle
-        #fixed: change titleinfo, type: Alternative
-        #       to     titleInfo, type: alternative
-        alt_title = soup.select('titleInfo[type="alternative"] > title')
-        if len(alt_title) > 0:
-            at = alt_title[0].getText()
-            df.at[i, 'AlternativeTitle'] = at.strip()
-        #     #date and title
-        #     if soup.find('dateIssued'):
-        #         date_cr = soup.find('dateIssued').getText().strip()
-        #     else:
-        #         date_cr = "n.d."
-        #
-        #     if (re.match(pattern1, date_cr)):
-        #         date_cr = convertDate(date_cr, True)
-        #     elif (re.match(pattern2, date_cr)):
-        #         date_cr = datetime.datetime.strptime(date_cr,'%d-%m-%Y').strftime('%Y-%m-%d')
-        #     df.at[i, 'DateCreated'] = date_cr
-        title = soup.find('title').get_text().strip()
-        # print(soup.find('dateIssued',{'qualifier':'Estimated'}))
-        # print(soup.find('dateIssued',{'qualifier':'approximate'}))
-        # print(title.find("ca."))
-        # print(date_cr)
+        alt_title = mappings['AlternativeTitle'](soup)
+        if alt_title:
+            df.at[i, 'AlternativeTitle'] = alt_title
 
-        # unsure
-        if (soup.find('dateIssued', {'qualifier': 'Estimated'}) is not None or soup.find('dateIssued', {
-            'qualifier': 'approximate'}) is not None) and title.find("ca. ") == -1 and date_cr != "n.d.":
-            title = title.strip() + ", ca. " + date_cr
-
-        df.at[i, 'Title'] = title
+        df.at[i, 'Title'] = mappings['Title'](soup)
 
         # unsure - what about abstract for Newspaper obj?
         # description
-        descr = soup.find('abstract')
-        if descr:
-            df.at[i, 'Description'] = descr.getText().strip()
+        description = mappings['Description'](soup)
+        if description:
+            df.at[i, 'Description'] = description
 
         # extent
-        ext = soup.find('extent')
+        ext = mappings['Extent'](soup)
         if ext:
-            extent = ext.get_text().strip()
-            semicol = extent.find(";")
-            if semicol > -1:
-                extent = extent[:semicol - 1]
-            df.at[i, 'Extent'] = extent
+            df.at[i, 'Extent'] = ext
 
         # topical subjects
-        toptags = soup.find_all('topic')
-        tsc = 0  # topical subject count
-        if len(toptags) > 0:
-            for top in toptags:
-                tsc += 1
-                fieldname = multi_hdg_mkr('Subject', tsc, 'Topic')
-                df.at[i, fieldname] = top.getText().strip()
+        for x in range(1, 6):
+            field = 'Subject%d_Topic' % x
+            result = mappings[field](soup)
+            print(result)
+            if result:
+                print('Setting %s to %s' % (field, result))
+                df.at[i, field] = result
 
         # corporate subject
-        # corpsu = soup.findAll(corpSub)
-        corpsu = soup.select('subject > name[type=corporate]')
-        if len(corpsu) > 0:
-            df.at[i, 'CorporateSubject_1'] = corpsu[0].getText().strip()
-        if len(corpsu) > 1:
-            df.at[i, 'CorporateSubject_2'] = corpsu[1].getText().strip()
+        for x in range(1, 3):
+            field = 'CorporateSubject_%d' % x
+            result = mappings[field](soup)
+            if result:
+                df.at[i, field] = result
 
-        corpCC = soup.select('mods > name[type=corporate]')
-        cCreator = None
-        cContrib = None
-        for corp in corpCC:
-            if corp.find('roleTerm', string="creator"):
-                cCreator = corp.find('namePart').getText()
-            elif corp.find('roleTerm', string="contributor"):
-                cContrib = corp.find('namePart').getText()
+        # corpCC = soup.select('mods > name[type=corporate]')
+        # cCreator = None
+        # cContrib = None
+        # for corp in corpCC:
+        #     if corp.find('roleTerm', string="creator"):
+        #         cCreator = corp.find('namePart').getText()
+        #     elif corp.find('roleTerm', string="contributor"):
+        #         cContrib = corp.find('namePart').getText()
 
         # corporate creator
-        # cCr = soup.findAll(corpCr)
-        if cCreator is not None:
-            df.at[i, 'CorporateCreator'] = cCreator.strip()
+        c_creator = mappings['CorporateCreator'](soup)
+        if c_creator:
+            df.at[i, 'CorporateCreator'] = c_creator.strip()
 
+        c_contrib = mappings['CorporateContributor'](soup)
         # corporate contributor
-        if cContrib is not None:
-            df.at[i, 'CorporateContributor'] = cContrib.strip()
+        if c_contrib:
+            df.at[i, 'CorporateContributor'] = c_contrib.strip()
 
         # geographic subject
-        geog_elems = soup.find_all('geographic')
-        geog_sub = None
-        for el in geog_elems:
-            # Make sure its not the <geographic> tag from Coordinates
-            if len(el.findChildren('cartographics')) is 0:
-                geog_sub = el
-                break
-
-        if geog_sub is not None:
+        geog_sub = mappings['Subject_Geographic'](soup)
+        if geog_sub:
             df.at[i, 'Subject_Geographic'] = geog_sub.getText().strip()
 
         # ADDED
         # publisher_original
-        publisher = soup.find('publisher')
-        if publisher is not None:
-            df.at[i, 'Publisher_Original'] = publisher.getText().strip()
+        publisher = mappings['Publisher_Original'](soup)
+        if publisher:
+            df.at[i, 'Publisher_Original'] = publisher
 
         # ADDED
         # dateRange
-        date_range = soup.find('temporal')
-        if date_range is not None:
-            df.at[i, 'DateRange'] = date_range.getText().strip()
+        date_range = mappings['DateRange'](soup)
+        if date_range:
+            df.at[i, 'DateRange'] = date_range
 
         # ADDED
         # notes
-        notes = soup.find('note')
-        if notes is not None:
-            df.at[i, 'Notes'] = notes.getText().strip()
+        notes = mappings['Notes'](soup)
+        if notes:
+            df.at[i, 'Notes'] = notes
 
         # ADDED
         # isbn
-        isbn = soup.select('identifier[type="isbn"]')
-        if len(isbn) > 0:
-            df.at[i, 'ISBN'] = isbn[0].getText().strip()
+        isbn = mappings['ISBN'](soup)
+        if isbn:
+            df.at[i, 'ISBN'] = isbn
 
         # ADDED
         # classification
-        classification = soup.find('classification')
-        if classification is not None:
-            df.at[i, 'Classification'] = classification.getText().strip()
+        classification = mappings['Classification'](soup)
+        if classification:
+            df.at[i, 'Classification'] = classification
 
         # ADDED
         # URI
-        uri = soup.select('identifier[type="uri"]')
-        if len(uri) > 0:
-            df.at[i, 'URI'] = uri[0].getText().strip()
+        uri = mappings['URI'](soup)
+        if uri:
+            df.at[i, 'URI'] = uri
 
         # ADDED
         # recordCreationDate & recordOrigin
-        record_origin = soup.find('recordOrigin')
-        record_creation_date = soup.find('recordCreationDate')
-        if record_origin is not None and record_creation_date is not None:
-            df.at[i, 'recordCreationDate'] = record_creation_date.getText().strip()
-            df.at[i, 'recordOrigin'] = record_origin.getText().strip()
+        record_origin = mappings['recordOrigin'](soup)
+        record_creation_date = mappings['recordCreationDate'](soup)
+        if record_origin and record_creation_date:
+            df.at[i, 'recordCreationDate'] = record_creation_date
+            df.at[i, 'recordOrigin'] = record_origin
 
 
         # FIXED
         # coordinates
-        coords = soup.find('cartographics')
-        if coords is not None:
-            df.at[i, 'Coordinates'] = coords.getText().strip()
+        coords = mappings['Coordinates'](soup)
+        if coords:
+            df.at[i, 'Coordinates'] = coords
 
         # personal creators and contributors (can have up to 3 creators, 1 contributor)
-        pers = soup.select('mods > name[type=personal]')
-        pCreators = []
-        if pers is not None:
-            for p in pers:
-                if p.find('roleTerm', string="creator"):
-                    pCreators.append(p)
+        # for x in range(1, 4):
+        #     field_family = 'Creator%d_Family' % x
+        #     field_given = 'Creator%d_Given' % x
+        #     creator_family = mappings[field_family](soup)
+        #     creator_given = mappings[field_family](soup)
+        #     if creator_family and creator_given:
+        #         df.at[i, field_family] = creator_family
+        #         df.at[i, field_given] = creator_given
 
-
-        # role = "creator"
-        pcCount = 0  # personal creator count
-        if len(pCreators) > 0:
-            for nm in pCreators:
-                pcCount += 1
-                given = nm.find('namePart', {'type': 'given'})
-                family = nm.find('namePart', {'type': 'family'})
-            if given is not None:
-                fld = multi_hdg_mkr("Creator", pcCount, 'Given')
-                df.at[i, fld] = given.getText().strip()
-            if family is not None:
-                fld = multi_hdg_mkr("Creator", pcCount, 'Family')
-                df.at[i, fld] = family.getText().strip()
+        # pers = soup.select('mods > name[type=personal]')
+        # pCreators = []
+        # if pers is not None:
+        #     for p in pers:
+        #         if p.find('roleTerm', string="creator"):
+        #             pCreators.append(p)
+        #
+        # # role = "creator"
+        # pcCount = 0  # personal creator count
+        # if len(pCreators) > 0:
+        #     for nm in pCreators:
+        #         pcCount += 1
+        #         given = nm.find('namePart', {'type': 'given'})
+        #         family = nm.find('namePart', {'type': 'family'})
+        #         if given is not None:
+        #             fld = multi_hdg_mkr("Creator", pcCount, 'Given')
+        #             df.at[i, fld] = given.getText().strip()
+        #         if family is not None:
+        #             fld = multi_hdg_mkr("Creator", pcCount, 'Family')
+        #             df.at[i, fld] = family.getText().strip()
 
         # personal contributors (max 1 per new guidelines)
         pContrib = None
@@ -435,6 +398,7 @@ def convert_to_csv(input_folder, output_folder, output_file):
             df.at[i, 'relatedItem_PID'] = hostPID[0].getText()
 
         i = i + 1
+        reset()  # Reset mappings for next file
 
     save(df, os.path.join(output_folder, output_file))
     print(df)
