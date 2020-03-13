@@ -179,9 +179,9 @@ def convert_to_csv(input_folder, output_folder, output_file):
         for x in range(1, 6):
             field = 'Subject%d_Topic' % x
             result = mappings[field](soup)
-            print(result)
+            #print(result)
             if result:
-                print('Setting %s to %s' % (field, result))
+                #print('Setting %s to %s' % (field, result))
                 df.at[i, field] = result
 
         # corporate subject
@@ -267,35 +267,14 @@ def convert_to_csv(input_folder, output_folder, output_file):
             df.at[i, 'Coordinates'] = coords
 
         # personal creators and contributors (can have up to 3 creators, 1 contributor)
-        # for x in range(1, 4):
-        #     field_family = 'Creator%d_Family' % x
-        #     field_given = 'Creator%d_Given' % x
-        #     creator_family = mappings[field_family](soup)
-        #     creator_given = mappings[field_family](soup)
-        #     if creator_family and creator_given:
-        #         df.at[i, field_family] = creator_family
-        #         df.at[i, field_given] = creator_given
-
-        # pers = soup.select('mods > name[type=personal]')
-        # pCreators = []
-        # if pers is not None:
-        #     for p in pers:
-        #         if p.find('roleTerm', string="creator"):
-        #             pCreators.append(p)
-        #
-        # # role = "creator"
-        # pcCount = 0  # personal creator count
-        # if len(pCreators) > 0:
-        #     for nm in pCreators:
-        #         pcCount += 1
-        #         given = nm.find('namePart', {'type': 'given'})
-        #         family = nm.find('namePart', {'type': 'family'})
-        #         if given is not None:
-        #             fld = multi_hdg_mkr("Creator", pcCount, 'Given')
-        #             df.at[i, fld] = given.getText().strip()
-        #         if family is not None:
-        #             fld = multi_hdg_mkr("Creator", pcCount, 'Family')
-        #             df.at[i, fld] = family.getText().strip()
+        for x in range(1, 4):
+            field_family = 'Creator%d_Family' % x
+            field_given = 'Creator%d_Given' % x
+            creator_family = mappings[field_family](soup)
+            creator_given = mappings[field_given](soup)
+            if creator_family and creator_given:
+                df.at[i, field_family] = creator_family
+                df.at[i, field_given] = creator_given
 
         # personal contributors (max 1 per new guidelines)
         pContrib = None

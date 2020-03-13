@@ -160,7 +160,7 @@ def subject_topic(soup, field: str):
     :param field: the field e.g. Subject1_Topic, Subject2_Topic, ..., Subject5_Topic
     :return: the field value if it exists, else None
     """
-    if len(subject_topic_store) is 0:
+    if len(subject_topic_store) == 0:
         top_tags = soup.find_all('topic')
         tsc = 0  # topical subject count
         if len(top_tags) > 0:
@@ -202,7 +202,7 @@ def corporate_subject(soup, field: str):
     :param field: the field e.g. CorporateSubject_1, CorporateSubject_2
     :return: the field value if it exists, else None
     """
-    if len(corporate_subject_store) is 0:
+    if len(corporate_subject_store) == 0:
         corp_sub = soup.select('subject > name[type=corporate]')
         if len(corp_sub) > 0:
             for x in range(len(corp_sub)):
@@ -254,7 +254,7 @@ def subject_geographic(soup):
     geog_sub = None
     for el in geog_elems:
         # Make sure its not the <geographic> tag from Coordinates
-        if len(el.findChildren('cartographics')) is 0:
+        if len(el.findChildren('cartographics')) == 0:
             geog_sub = el
             break
 
@@ -347,32 +347,36 @@ creator_given_store = {}  # store to avoid searching again
 
 
 def populate_creators(soup):
+    """
+    Finds creator families and given and puts into store
+    :param soup: the bs4 object
+    :return: None
+    """
     pers = soup.select('mods > name[type=personal]')
-    p_creators = []
     if pers is not None:
+        x = 1
         for p in pers:
             if p.find('roleTerm', string="creator"):
-                p_creators.append(p)
+                # p_creators.append(p)
+                given = p.find('namePart', {'type': 'given'})
+                family = p.find('namePart', {'type': 'family'})
 
-    i = 0  # personal creator count
-    if len(p_creators) > 0:
-        for nm in p_creators:
-            i += 1
-            # CreatorX_Given
-            given = nm.find('namePart', {'type': 'given'})
-            # CreatorX_Family
-            family = nm.find('namePart', {'type': 'family'})
-
-            if given is not None:
-                creator_given_store['Creator%d_Given' % i] = \
-                    given.getText().strip()
-            if family is not None:
-                creator_family_store['Creator%d_Family' % i] = \
-                    family.getText().strip()
+                if given and family:
+                    creator_given_store['Creator%d_Given' % x] = \
+                        given.getText().strip()
+                    creator_family_store['Creator%d_Family' % x] = \
+                        family.getText().strip()
+                    x += 1
 
 
 def creator_family(soup, field):
-    if len(creator_family_store) is 0:
+    """
+    Finds creator family given the field
+    :param soup: the bs4 object
+    :param field: the field e.g. Creator1_Family, Creator2_Family, etc.
+    :return: the str if found, else None
+    """
+    if len(creator_family_store) == 0:
         populate_creators(soup)
 
     return creator_family_store[field] if field in creator_family_store else None
@@ -391,7 +395,13 @@ def creator3_family(soup):
 
 
 def creator_given(soup, field):
-    if len(creator_given_store) is 0:
+    """
+    Finds the creator given given the field
+    :param soup: the bs4 object
+    :param field: the field e.g. Creator1_Given, Creator2_Given, etc.
+    :return: str if found, else None
+    """
+    if len(creator_given_store) == 0:
         populate_creators(soup)
 
     return creator_given_store[field] if field in creator_given_store else None
