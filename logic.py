@@ -112,7 +112,8 @@ def convert_to_csv(input_folder, output_folder, output_file):
 
     col_names = [
      'key', 'imageLink', 'PID', 'Filename', 'Directory', 'child_key', 'Title', 'AlternativeTitle', 'Creator1_Given',
-     'Creator1_Family', 'CorporateCreator', 'Contributor1_Given', 'Contributor1_Family', 'CorporateContributor',
+     'Creator1_Family', 'CorporateCreator', 'Contributor1_Given', 'Contributor1_Family', 'Contributor2_Given',
+     'Contributor2_Family', 'CorporateContributor',
      'Publisher_Original', 'DateCreated', 'Description', 'Extent', 'Subject1_Topic', 'Subject2_Topic', 'Subject3_Topic',
      'Subject4_Topic', 'Subject5_Topic', 'Subject_Geographic', 'Coordinates', 'Subject1_Given', 'Subject1_Family',
      'Subject2_Given', 'Subject2_Family', 'Subject3_Given', 'Subject3_Family', 'CorporateSubject_1',
@@ -276,73 +277,53 @@ def convert_to_csv(input_folder, output_folder, output_file):
                 df.at[i, field_family] = creator_family
                 df.at[i, field_given] = creator_given
 
-        # personal contributors (max 1 per new guidelines)
-        pContrib = None
-        pers = soup.select('mods > name[type=personal]')
-        if pers is not None:
-            for p in pers:
-                # print(p.has_attr('type'))
-                if p.find('roleTerm', string="contributor"):
-                    pContrib = p
-                    break
 
-        given = None
-        family = None
-        if pContrib is not None:
-            given = pContrib.find('namePart', {'type': 'given'})
-            family = pContrib.find('namePart', {'type': 'family'})
-        if given is not None:
-            fld = "Contributor1_Given"
-            df.at[i, fld] = given.getText().strip()
-        if family is not None:
-            fld = 'Contributor1_Family'
-            df.at[i, fld] = family.getText().strip()
+
+        # personal contributors
+        for x in range(1, 3):
+            field_family = 'Contributor%d_Family' % x
+            field_given = 'Contributor%d_Given' % x
+            contributor_family = mappings[field_family](soup)
+            contributor_given = mappings[field_given](soup)
+            if contributor_family and contributor_given:
+                df.at[i, field_family] = contributor_family
+                df.at[i, field_given] = contributor_given
 
         # personal name subjects (find number)
-        psCount = 0  # personal subject count
-        perSubs = soup.select('subject > name[type=personal]')
-        if len(perSubs) > 0:
-            for nm in perSubs:
-                psCount += 1
-                given = nm.find('namePart', {'type': 'given'})
-                if given is not None:
-                    fld = multi_hdg_mkr("Subject", psCount, 'Given')
-                    df.at[i, fld] = given.getText().strip()
-                family = nm.find('namePart', {'type': 'family'})
-                if family is not None:
-                    fld = multi_hdg_mkr("Subject", psCount, 'Family')
-                    df.at[i, fld] = family.getText().strip()
+        for x in range(1, 6):
+            field_family = 'Subject%d_Family' % x
+            field_given = 'Subject%d_Given' % x
+            subject_family = mappings[field_family](soup)
+            subject_given = mappings[field_given](soup)
+            if subject_family and subject_given:
+                df.at[i, field_family] = subject_family
+                df.at[i, field_given] = subject_given
 
-        # genre
-        genre = soup.find('genre')
-        if genre is not None:
-            gen = genre.getText().strip()
-            df.at[i, 'Genre'] = gen
-            auth = soup.find("td", {"valign": True})
-            if genre is not None:
-                genAuth = ""
-                auth = soup.find("genre", {"authority": "marcgt"})
-                if auth is not None:
-                    genAuth = "marcgt"
-                else:
-                    genAuth = "aat"
-                df.at[i, 'Genre'] = gen
-                df.at[i, 'GenreAuthority'] = genAuth
+        # genre and genreauthority
+        genre = mappings['Genre'](soup)
+        if genre:
+            df.at[i, 'Genre'] = genre
+        genre_authority = mappings['GenreAuthority'](soup)
+        if genre_authority:
+            df.at[i, 'GenreAuthority'] = genre_authority
+
         # type
-        typ = soup.find('typeOfResource')
-        if typ is not None:
-            df.at[i, 'Type'] = typ.get_text().strip()
+        _type = mappings['Type'](soup)
+        if _type:
+            df.at[i, 'Type'] = _type
 
         # format
-        frmat = soup.find('internetMediaType')
-        if frmat is not None:
-            df.at[i, 'internetMediaType'] = frmat.getText().strip()
+        internet_media_type = mappings['internetMediaType'](soup)
+        if internet_media_type:
+            df.at[i, 'internetMediaType'] = internet_media_type
 
         # FIXED - Now detects both Language1 and Language2
         # language
-        lang = soup.find_all('languageTerm')
-        for x in range(len(lang)):
-            df.at[i, 'Language%d' % (x+1)] = lang[x].getText().strip()
+        for x in range(1, 3):
+            field = 'Language%d' % x
+            lang = mappings[field](soup)
+            if lang:
+                df.at[i, field] = lang
 
         # identifiers
         ai = soup.find('identifier', {'type': 'access'})

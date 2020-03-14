@@ -2,6 +2,10 @@ import os
 import re
 
 
+def generic_find_elem(soup, field: str):
+    return soup.find(field)
+
+
 def generic_find(soup, field: str):
     """
     Generic find on the soup
@@ -9,7 +13,7 @@ def generic_find(soup, field: str):
     :param field: the tag name to search for
     :return: the value stripped if found, else None
     """
-    value = soup.find(field)
+    value = generic_find_elem(soup, field)
     return value.getText().strip() if value else None
 
 
@@ -353,11 +357,10 @@ def populate_creators(soup):
     :return: None
     """
     pers = soup.select('mods > name[type=personal]')
-    if pers is not None:
+    if pers and len(pers) > 0:
         x = 1
         for p in pers:
             if p.find('roleTerm', string="creator"):
-                # p_creators.append(p)
                 given = p.find('namePart', {'type': 'given'})
                 family = p.find('namePart', {'type': 'family'})
 
@@ -419,6 +422,239 @@ def creator3_given(soup):
     return creator_given(soup, 'Creator3_Given')
 
 
+contributor_family_store = {}  # store to avoid searching again
+contributor_given_store = {}  # store to avoid searching again
+
+
+def populate_contributors(soup):
+    """
+    Finds contributors families and given and puts into store
+    :param soup: the bs4 object
+    :return: None
+    """
+    pers = soup.select('mods > name[type=personal]')
+    if pers and len(pers) > 0:
+        x = 1
+        for p in pers:
+            if p.find('roleTerm', string="contributor"):
+                given = p.find('namePart', {'type': 'given'})
+                family = p.find('namePart', {'type': 'family'})
+
+                if given and family:
+                    contributor_given_store['Contributor%d_Given' % x] = \
+                        given.getText().strip()
+                    contributor_family_store['Contributor%d_Family' % x] = \
+                        family.getText().strip()
+                    x += 1
+
+
+def contributor_family(soup, field):
+    """
+    Finds contributor family given the field
+    :param soup: the bs4 object
+    :param field: the field e.g. Contributor1_Family, Contributor2_Family, etc.
+    :return: the str if found, else None
+    """
+    if len(contributor_family_store) == 0:
+        populate_contributors(soup)
+
+    return contributor_family_store[field] if field in contributor_family_store else None
+
+
+def contributor1_family(soup):
+    return contributor_family(soup, 'Contributor1_Family')
+
+
+def contributor2_family(soup):
+    return contributor_family(soup, 'Contributor2_Family')
+
+
+def contributor_given(soup, field):
+    """
+    Finds the contributor given given the field
+    :param soup: the bs4 object
+    :param field: the field e.g. Contributor1_Given, Contributor2_Given, etc.
+    :return: str if found, else None
+    """
+    if len(contributor_given_store) == 0:
+        populate_creators(soup)
+
+    return contributor_given_store[field] if field in contributor_given_store else None
+
+
+def contributor1_given(soup):
+    return contributor_given(soup, 'Contributor1_Given')
+
+
+def contributor2_given(soup):
+    return contributor_given(soup, 'Contributor1_Given')
+
+
+subject_family_store = {}  # store to avoid searching again
+subject_given_store = {}  # store to avoid searching again
+
+
+def populate_subjects(soup):
+    """
+    Finds subjects families and given and puts into store
+    :param soup: the bs4 object
+    :return: None
+    """
+    pers = soup.select('subject > name[type=personal]')
+    if pers and len(pers) > 0:
+        x = 1
+        for p in pers:
+            given = p.find('namePart', {'type': 'given'})
+            family = p.find('namePart', {'type': 'family'})
+
+            if given and family:
+                subject_given_store['Subject%d_Given' % x] = \
+                    given.getText().strip()
+                subject_family_store['Subject%d_Family' % x] = \
+                    family.getText().strip()
+                x += 1
+
+
+def subject_family(soup, field):
+    """
+    Finds subject family given the field
+    :param soup: the bs4 object
+    :param field: the field e.g. Subject1_Family, Subject2_Family, etc.
+    :return: the str if found, else None
+    """
+    if len(subject_family_store) == 0:
+        populate_subjects(soup)
+
+    return subject_family_store[field] if field in subject_family_store else None
+
+
+def subject1_family(soup):
+    return subject_family(soup, 'Subject1_Family')
+
+
+def subject2_family(soup):
+    return subject_family(soup, 'Subject2_Family')
+
+
+def subject3_family(soup):
+    return subject_family(soup, 'Subject3_Family')
+
+
+def subject4_family(soup):
+    return subject_family(soup, 'Subject4_Family')
+
+
+def subject5_family(soup):
+    return subject_family(soup, 'Subject5_Family')
+
+
+def subject_given(soup, field):
+    """
+    Finds the subject given given the field
+    :param soup: the bs4 object
+    :param field: the field e.g. Subject1_Given, Subject2_Given, etc.
+    :return: str if found, else None
+    """
+    if len(subject_given_store) == 0:
+        populate_subjects(soup)
+
+    return subject_given_store[field] if field in subject_given_store else None
+
+
+def subject1_given(soup):
+    return subject_given(soup, 'Subject1_Given')
+
+
+def subject2_given(soup):
+    return subject_given(soup, 'Subject2_Given')
+
+
+def subject3_given(soup):
+    return subject_given(soup, 'Subject3_Given')
+
+
+def subject4_given(soup):
+    return subject_given(soup, 'Subject4_Given')
+
+
+def subject5_given(soup):
+    return subject_given(soup, 'Subject5_Given')
+
+
+def genre(soup):
+    """
+    Finds the genre in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'genre')
+
+
+def genre_authority(soup):
+    """
+    Finds the genre authority in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    # Must have genre if there is an authority
+    _genre = generic_find_elem(soup, 'genre')
+    if _genre:
+        return _genre.attrs['authority']
+
+
+def _type(soup):
+    """
+    Finds the typeOfResource in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'typeOfResource')
+
+
+def internet_media_type(soup):
+    """
+    Finds the internet media type in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'internetMediaType')
+
+
+language_store = {}  # To avoid searching again
+
+
+def populate_languages(soup):
+    """
+    Finds all languages in the MODS XML
+    :param soup: the bs4 object
+    :return: None
+    """
+    lang = soup.find_all('languageTerm')
+    for x in range(len(lang)):
+        language_store['Language%d' % (x + 1)] = lang[x].getText().strip()
+
+
+def language(soup, field):
+    """
+    Finds language given field
+    :param soup: the bs4 object
+    :param field: the field e.g. Language1 or Language2
+    :return: str if found, else None
+    """
+    if len(language_store) == 0:
+        populate_languages(soup)
+
+    return language_store[field] if field in language_store else None
+
+
+def language_1(soup):
+    return language(soup, 'Language1')
+
+
+def language_2(soup):
+    return language(soup, 'Language2')
+
+
 def reset():
     """
     Resets variables for next file
@@ -428,6 +664,11 @@ def reset():
     corporate_subject_store.clear()
     creator_family_store.clear()
     creator_given_store.clear()
+    contributor_family_store.clear()
+    contributor_given_store.clear()
+    subject_family_store.clear()
+    subject_given_store.clear()
+    language_store.clear()
 
 
 mappings = {
@@ -463,5 +704,25 @@ mappings = {
     'Creator2_Family': creator2_family,
     'Creator2_Given': creator2_given,
     'Creator3_Family': creator3_family,
-    'Creator3_Given': creator3_given
+    'Creator3_Given': creator3_given,
+    'Contributor1_Family': contributor1_family,
+    'Contributor1_Given': contributor1_given,
+    'Contributor2_Family': contributor2_family,
+    'Contributor2_Given': contributor2_given,
+    'Subject1_Family': subject1_family,
+    'Subject1_Given': subject1_given,
+    'Subject2_Family': subject2_family,
+    'Subject2_Given': subject2_given,
+    'Subject3_Family': subject3_family,
+    'Subject3_Given': subject3_given,
+    'Subject4_Family': subject4_family,
+    'Subject4_Given': subject4_given,
+    'Subject5_Family': subject5_family,
+    'Subject5_Given': subject5_given,
+    'Genre': genre,
+    'GenreAuthority': genre_authority,
+    'Type': _type,
+    'internetMediaType': internet_media_type,
+    'Language1': language_1,
+    'Language2': language_2
 }
