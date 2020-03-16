@@ -169,6 +169,6 @@ def convert_to_csv(input_folder, output_folder, output_file):
             if val:
                 df.at[i, col] = val
         i += 1
-        reset()  # Reset mappings for next files
+        reset()  # Reset mappings for next file
 
     save(df, os.path.join(output_folder, output_file))
