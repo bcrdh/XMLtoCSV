@@ -2,18 +2,19 @@ import os
 import re
 
 
-def generic_find_elem(soup, field: str):
-    return soup.find(field)
+def generic_find_elem(soup, field: str, attrs):
+    return soup.find(field) if attrs is None else soup.find(field, attrs)
 
 
-def generic_find(soup, field: str):
+def generic_find(soup, field: str, attrs):
     """
     Generic find on the soup
     :param soup: the bs4 object
     :param field: the tag name to search for
+    :param attrs: the attributes of the element, None for none
     :return: the value stripped if found, else None
     """
-    value = generic_find_elem(soup, field)
+    value = generic_find_elem(soup, field, attrs)
     return value.getText().strip() if value else None
 
 
@@ -36,10 +37,10 @@ def date_created(soup):
     """
     pattern1 = r'^[A-Z][a-z]{2}-\d{2}$'  # %b-%Y date (e.g. Jun-17)
     pattern2 = r'^\d{2}-\d{2}-[1-2]\d{3}$'  # %d-%m-%Y date (e.g. 21-01-1917)
-    if soup.find('dateIssued'):
-        date_cr = soup.find('dateIssued').getText().strip()
-    else:
-        date_cr = "n.d."
+    date_cr = generic_find(soup, 'dateIssued', {'encoding': 'w3cdtf', 'keyDate': 'yes'})
+
+    if not date_cr:
+        return 'n.d.'
 
     from logic import convert_date  # For checking dates
 
@@ -52,13 +53,13 @@ def date_created(soup):
     return date_cr
 
 
-def key(i: int):
+def key(soup):
     """
     The key (basically row num) of current MODS in CSV
     :param i: the for loop index int i
     :return: the appropriate key to put in CSV
     """
-    return str(i + 1)
+    return str(soup.i + 1)
 
 
 def get_repo_num(filename: str):
@@ -77,24 +78,24 @@ def get_repo_num(filename: str):
     return repo, num
 
 
-def pid(filename: str):
+def pid(soup):
     """
     Generates CSV->XML key mapping
     :param soup: the bs4 object
     :param filename: the MODS XML filename
     :return: the pid of the MODS
     """
-    repo, num = get_repo_num(filename)
+    repo, num = get_repo_num(soup.filename)
     return '%s_%s' % (repo, num)
 
 
-def image_link(filename: str):
+def image_link(soup):
     """
     Generates the imagelink given the filename
     :param filename: the MODS XML filename
     :return: the image link
     """
-    repo, num = get_repo_num(filename)
+    repo, num = get_repo_num(soup.filename)
     return "https://doh.arcabc.ca/islandora/object/" + repo + "%3A" + num
 
 
@@ -262,7 +263,7 @@ def subject_geographic(soup):
             geog_sub = el
             break
 
-    return geog_sub
+    return geog_sub.getText().strip()
 
 
 def publisher_original(soup):
@@ -271,7 +272,7 @@ def publisher_original(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'publisher')
+    return generic_find(soup, 'publisher', None)
 
 
 def date_range(soup):
@@ -280,7 +281,7 @@ def date_range(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'temporal')
+    return generic_find(soup, 'temporal', None)
 
 
 def notes(soup):
@@ -289,7 +290,7 @@ def notes(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'note')
+    return generic_find(soup, 'note', None)
 
 
 def isbn(soup):
@@ -307,7 +308,7 @@ def classification(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'classification')
+    return generic_find(soup, 'classification', None)
 
 
 def uri(soup):
@@ -325,7 +326,7 @@ def record_origin(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'recordOrigin')
+    return generic_find(soup, 'recordOrigin', None)
 
 
 def record_creation_date(soup):
@@ -334,7 +335,7 @@ def record_creation_date(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'recordCreationDate')
+    return generic_find(soup, 'recordCreationDate', None)
 
 
 def coordinates(soup):
@@ -343,7 +344,7 @@ def coordinates(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'cartographics')
+    return generic_find(soup, 'cartographics', None)
 
 
 creator_family_store = {}  # store to avoid searching again
@@ -477,7 +478,7 @@ def contributor_given(soup, field):
     :return: str if found, else None
     """
     if len(contributor_given_store) == 0:
-        populate_creators(soup)
+        populate_contributors(soup)
 
     return contributor_given_store[field] if field in contributor_given_store else None
 
@@ -487,7 +488,7 @@ def contributor1_given(soup):
 
 
 def contributor2_given(soup):
-    return contributor_given(soup, 'Contributor1_Given')
+    return contributor_given(soup, 'Contributor2_Given')
 
 
 subject_family_store = {}  # store to avoid searching again
@@ -587,7 +588,7 @@ def genre(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'genre')
+    return generic_find(soup, 'genre', None)
 
 
 def genre_authority(soup):
@@ -597,7 +598,7 @@ def genre_authority(soup):
     :return: str if found, else None
     """
     # Must have genre if there is an authority
-    _genre = generic_find_elem(soup, 'genre')
+    _genre = generic_find_elem(soup, 'genre', None)
     if _genre:
         return _genre.attrs['authority']
 
@@ -608,7 +609,7 @@ def _type(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'typeOfResource')
+    return generic_find(soup, 'typeOfResource', None)
 
 
 def internet_media_type(soup):
@@ -617,7 +618,7 @@ def internet_media_type(soup):
     :param soup: the bs4 object
     :return: str if found, else None
     """
-    return generic_find(soup, 'internetMediaType')
+    return generic_find(soup, 'internetMediaType', None)
 
 
 language_store = {}  # To avoid searching again
@@ -653,6 +654,94 @@ def language_1(soup):
 
 def language_2(soup):
     return language(soup, 'Language2')
+
+
+def access_identifier(soup):
+    """
+    Finds access identifier in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'identifier', {'type': 'access'})
+
+
+def local_identifier(soup):
+    """
+    Finds the local identifier in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'identifier', {'type': 'local'})
+
+
+def source(soup):
+    """
+    Finds the source in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'physicalLocation', None)
+
+
+def rights(soup):
+    """
+    Finds the rights in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'accessCondition', {'displayLabel': 'Restricted'})
+
+
+def rights_statement(soup):
+    """
+    Finds the rights statement in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'accessCondition', {'displayLabel': 'Rights Statement'})
+
+
+def creative_commons_uri(soup):
+    """
+    Finds the creative commons uri in the MODS XML file
+    :param soup:
+    :return: str if found, else None
+    """
+    return generic_find(soup, 'accessCondition', {'displayLabel': 'Creative Commons license'})
+
+
+def related_item_title(soup):
+    """
+    Finds the related item title in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_select(soup, 'relatedItem[type=host] > titleInfo > title')
+
+
+def related_item_pid(soup):
+    """
+    Finds the related item pid in the MODS XML file
+    :param soup: the bs4 object
+    :return: str if found, else None
+    """
+    return generic_select(soup, 'relatedItem[type=host] > identifier')
+
+
+def identifier(soup):
+    return access_identifier(soup)
+
+
+def issue_title(soup):
+    return title(soup)
+
+
+def volume(soup):
+    return generic_select(soup, 'detail[type=volume] > number')
+
+
+def issue(soup):
+    return generic_select(soup, 'detail[type=issue] > number')
 
 
 def reset():
@@ -724,5 +813,17 @@ mappings = {
     'Type': _type,
     'internetMediaType': internet_media_type,
     'Language1': language_1,
-    'Language2': language_2
+    'Language2': language_2,
+    'AccessIdentifier': access_identifier,
+    'LocalIdentifier': local_identifier,
+    'Source': source,
+    'Rights': rights,
+    'RightsStatement': rights_statement,
+    'CreativeCommons_URI': creative_commons_uri,
+    'relatedItem_Title': related_item_title,
+    'relatedItem_PID': related_item_pid,
+    'Identifier': identifier,
+    'IssueTitle': issue_title,
+    'Volume': volume,
+    'Issue': issue
 }

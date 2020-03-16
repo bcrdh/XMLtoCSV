@@ -71,15 +71,10 @@ def is_newspaper_issue(filename):
     return soup.find('detail', {'type': 'volume'})
 
 
-def convert_newspapers_to_csv(files):
+def convert_newspapers_to_csv(files, output_folder, output_file):
     news_col_names = [
-        'key', 'Title', 'AlternativeTitle', 'Creator1_Given', 'Creator1_Family',
-        'CorporateCreator', 'Contributor1_Given', 'Contributor1_Family',
-        'CorporateContributor', 'Publisher_Original', 'DateCreated', 'Description',
-        'CorporateSubject1', 'Genre', 'GenreAuthority', 'Type', 'internetMediaType',
-        'Language', 'Notes', 'Source', 'Rights', 'CreativeCommons_URI', 'RightsStatement',
-        'relatedItem_Title', 'relatedItem_PID', 'DateIssued_Start', 'DatedIssued_End', 'DateRange',
-        'Frequency', 'Abstract', 'Publisher_Location', 'IssueTitle', 'Volume', 'Issue'
+        'key', 'Filename', 'Identifier', 'IssueTitle', 'DateCreated', 'Volume', 'Issue',
+        'Rights', 'CreativeCommons_URI', 'RightsStatement'
     ]
 
     # Create data frame
@@ -95,9 +90,21 @@ def convert_newspapers_to_csv(files):
         # Load contents into beautifulsoup to parse xml
         soup = BeautifulSoup(contents, 'xml')
 
+        # Set custom attrs
+        soup.i = i
+        soup.filename = filename
 
+        # Set remaining cols
+        for col in news_col_names:
+            if col not in mappings:
+                continue
+            val = mappings[col](soup)
+            if val:
+                df.at[i, col] = val
+        i += 1
+        reset()  # Reset mappings for next file
 
-
+    save(df, os.path.join(output_folder, output_file))
 
 
 def convert_to_csv(input_folder, output_folder, output_file):
@@ -111,15 +118,18 @@ def convert_to_csv(input_folder, output_folder, output_file):
     # updated for **Rev 18.5 of the Master Metadata Sheet**
 
     col_names = [
-     'key', 'imageLink', 'PID', 'Filename', 'Directory', 'child_key', 'Title', 'AlternativeTitle', 'Creator1_Given',
-     'Creator1_Family', 'CorporateCreator', 'Contributor1_Given', 'Contributor1_Family', 'Contributor2_Given',
-     'Contributor2_Family', 'CorporateContributor',
-     'Publisher_Original', 'DateCreated', 'Description', 'Extent', 'Subject1_Topic', 'Subject2_Topic', 'Subject3_Topic',
-     'Subject4_Topic', 'Subject5_Topic', 'Subject_Geographic', 'Coordinates', 'Subject1_Given', 'Subject1_Family',
-     'Subject2_Given', 'Subject2_Family', 'Subject3_Given', 'Subject3_Family', 'CorporateSubject_1',
-     'CorporateSubject_2', 'DateRange', 'Genre', 'GenreAuthority', 'Type', 'internetMediaType', 'Language1',
-     'Language2', 'Notes', 'AccessIdentifier', 'LocalIdentifier', 'ISBN', 'Classification', 'URI', 'Source', 'Rights',
-     'CreativeCommons_URI', 'RightsStatement', 'relatedItem_Title', 'relatedItem_PID', 'recordCreationDate', 'recordOrigin'
+        'key', 'imageLink', 'PID', 'Filename', 'Directory', 'child_key', 'Title', 'AlternativeTitle', 'Creator1_Given',
+        'Creator1_Family', 'CorporateCreator', 'Contributor1_Given', 'Contributor1_Family', 'Contributor2_Given',
+        'Contributor2_Family', 'CorporateContributor',
+        'Publisher_Original', 'DateCreated', 'Description', 'Extent', 'Subject1_Topic', 'Subject2_Topic',
+        'Subject3_Topic',
+        'Subject4_Topic', 'Subject5_Topic', 'Subject_Geographic', 'Coordinates', 'Subject1_Given', 'Subject1_Family',
+        'Subject2_Given', 'Subject2_Family', 'Subject3_Given', 'Subject3_Family', 'CorporateSubject_1',
+        'CorporateSubject_2', 'DateRange', 'Genre', 'GenreAuthority', 'Type', 'internetMediaType', 'Language1',
+        'Language2', 'Notes', 'AccessIdentifier', 'LocalIdentifier', 'ISBN', 'Classification', 'URI', 'Source',
+        'Rights',
+        'CreativeCommons_URI', 'RightsStatement', 'relatedItem_Title', 'relatedItem_PID', 'recordCreationDate',
+        'recordOrigin'
     ]
 
     path = input_folder
@@ -130,7 +140,7 @@ def convert_to_csv(input_folder, output_folder, output_file):
 
     # Check newspaper
     if is_newspaper_issue(files[0]):
-        convert_newspapers_to_csv(files)
+        convert_newspapers_to_csv(files, output_folder, output_file)
         return  # Don't continue
 
     # Create data frame
@@ -147,219 +157,18 @@ def convert_to_csv(input_folder, output_folder, output_file):
         # Load contents into beautifulsoup to parse xml
         soup = BeautifulSoup(contents, 'xml')
 
-        # Set DateCreated column
-        df.at[i, 'DateCreated'] = mappings['DateCreated'](soup)
+        # Set custom attrs
+        soup.i = i
+        soup.filename = filename
 
-        # Key
-        df.at[i, 'key'] = mappings['key'](i)
-
-        # Arca PID
-        df.at[i, 'PID'] = mappings['PID'](filename)
-
-        # Link to Image
-        df.at[i, 'imageLink'] = mappings['imageLink'](filename)
-
-        alt_title = mappings['AlternativeTitle'](soup)
-        if alt_title:
-            df.at[i, 'AlternativeTitle'] = alt_title
-
-        df.at[i, 'Title'] = mappings['Title'](soup)
-
-        # unsure - what about abstract for Newspaper obj?
-        # description
-        description = mappings['Description'](soup)
-        if description:
-            df.at[i, 'Description'] = description
-
-        # extent
-        ext = mappings['Extent'](soup)
-        if ext:
-            df.at[i, 'Extent'] = ext
-
-        # topical subjects
-        for x in range(1, 6):
-            field = 'Subject%d_Topic' % x
-            result = mappings[field](soup)
-            #print(result)
-            if result:
-                #print('Setting %s to %s' % (field, result))
-                df.at[i, field] = result
-
-        # corporate subject
-        for x in range(1, 3):
-            field = 'CorporateSubject_%d' % x
-            result = mappings[field](soup)
-            if result:
-                df.at[i, field] = result
-
-        # corpCC = soup.select('mods > name[type=corporate]')
-        # cCreator = None
-        # cContrib = None
-        # for corp in corpCC:
-        #     if corp.find('roleTerm', string="creator"):
-        #         cCreator = corp.find('namePart').getText()
-        #     elif corp.find('roleTerm', string="contributor"):
-        #         cContrib = corp.find('namePart').getText()
-
-        # corporate creator
-        c_creator = mappings['CorporateCreator'](soup)
-        if c_creator:
-            df.at[i, 'CorporateCreator'] = c_creator.strip()
-
-        c_contrib = mappings['CorporateContributor'](soup)
-        # corporate contributor
-        if c_contrib:
-            df.at[i, 'CorporateContributor'] = c_contrib.strip()
-
-        # geographic subject
-        geog_sub = mappings['Subject_Geographic'](soup)
-        if geog_sub:
-            df.at[i, 'Subject_Geographic'] = geog_sub.getText().strip()
-
-        # ADDED
-        # publisher_original
-        publisher = mappings['Publisher_Original'](soup)
-        if publisher:
-            df.at[i, 'Publisher_Original'] = publisher
-
-        # ADDED
-        # dateRange
-        date_range = mappings['DateRange'](soup)
-        if date_range:
-            df.at[i, 'DateRange'] = date_range
-
-        # ADDED
-        # notes
-        notes = mappings['Notes'](soup)
-        if notes:
-            df.at[i, 'Notes'] = notes
-
-        # ADDED
-        # isbn
-        isbn = mappings['ISBN'](soup)
-        if isbn:
-            df.at[i, 'ISBN'] = isbn
-
-        # ADDED
-        # classification
-        classification = mappings['Classification'](soup)
-        if classification:
-            df.at[i, 'Classification'] = classification
-
-        # ADDED
-        # URI
-        uri = mappings['URI'](soup)
-        if uri:
-            df.at[i, 'URI'] = uri
-
-        # ADDED
-        # recordCreationDate & recordOrigin
-        record_origin = mappings['recordOrigin'](soup)
-        record_creation_date = mappings['recordCreationDate'](soup)
-        if record_origin and record_creation_date:
-            df.at[i, 'recordCreationDate'] = record_creation_date
-            df.at[i, 'recordOrigin'] = record_origin
-
-
-        # FIXED
-        # coordinates
-        coords = mappings['Coordinates'](soup)
-        if coords:
-            df.at[i, 'Coordinates'] = coords
-
-        # personal creators and contributors (can have up to 3 creators, 1 contributor)
-        for x in range(1, 4):
-            field_family = 'Creator%d_Family' % x
-            field_given = 'Creator%d_Given' % x
-            creator_family = mappings[field_family](soup)
-            creator_given = mappings[field_given](soup)
-            if creator_family and creator_given:
-                df.at[i, field_family] = creator_family
-                df.at[i, field_given] = creator_given
-
-
-
-        # personal contributors
-        for x in range(1, 3):
-            field_family = 'Contributor%d_Family' % x
-            field_given = 'Contributor%d_Given' % x
-            contributor_family = mappings[field_family](soup)
-            contributor_given = mappings[field_given](soup)
-            if contributor_family and contributor_given:
-                df.at[i, field_family] = contributor_family
-                df.at[i, field_given] = contributor_given
-
-        # personal name subjects (find number)
-        for x in range(1, 6):
-            field_family = 'Subject%d_Family' % x
-            field_given = 'Subject%d_Given' % x
-            subject_family = mappings[field_family](soup)
-            subject_given = mappings[field_given](soup)
-            if subject_family and subject_given:
-                df.at[i, field_family] = subject_family
-                df.at[i, field_given] = subject_given
-
-        # genre and genreauthority
-        genre = mappings['Genre'](soup)
-        if genre:
-            df.at[i, 'Genre'] = genre
-        genre_authority = mappings['GenreAuthority'](soup)
-        if genre_authority:
-            df.at[i, 'GenreAuthority'] = genre_authority
-
-        # type
-        _type = mappings['Type'](soup)
-        if _type:
-            df.at[i, 'Type'] = _type
-
-        # format
-        internet_media_type = mappings['internetMediaType'](soup)
-        if internet_media_type:
-            df.at[i, 'internetMediaType'] = internet_media_type
-
-        # FIXED - Now detects both Language1 and Language2
-        # language
-        for x in range(1, 3):
-            field = 'Language%d' % x
-            lang = mappings[field](soup)
-            if lang:
-                df.at[i, field] = lang
-
-        # identifiers
-        ai = soup.find('identifier', {'type': 'access'})
-        if ai is not None:
-            df.at[i, 'AccessIdentifier'] = ai.getText().strip()
-        li = soup.find('identifier', {'type': 'local'})
-        if li is not None:
-            df.at[i, 'LocalIdentifier'] = li.getText().strip()
-
-        # source
-        src = soup.find('physicalLocation')
-        if src is not None:
-            df.at[i, 'Source'] = src.getText().strip()
-
-        # rights
-        rights = soup.find('accessCondition', {'displayLabel': 'Restricted'})
-        if rights is not None:
-            df.at[i, 'Rights'] = rights.getText().strip()
-        rightsStmt = soup.find('accessCondition', {'displayLabel': 'Rights Statement'})
-        if rightsStmt is not None:
-            df.at[i, 'RightsStatement'] = rightsStmt.getText().strip()
-        ccl = soup.find('accessCondition', {'displayLabel': 'Creative Commons license'})
-        if ccl is not None:
-            df.at[i, 'CreativeCommons_URI'] = ccl.getText().strip()
-
-        #        relatedItem
-        hostTitle = soup.select('relatedItem[type=host] > titleInfo > title')
-        hostPID = soup.select('relatedItem[type=host] > identifier')
-        if len(hostTitle) > 0:
-            df.at[i, 'relatedItem_Title'] = hostTitle[0].getText()
-        if len(hostPID) > 0:
-            df.at[i, 'relatedItem_PID'] = hostPID[0].getText()
-
-        i = i + 1
+        # Set remaining cols
+        for col in col_names:
+            if col not in mappings:
+                continue
+            val = mappings[col](soup)
+            if val:
+                df.at[i, col] = val
+        i += 1
         reset()  # Reset mappings for next file
 
     save(df, os.path.join(output_folder, output_file))
-    print(df)
-
