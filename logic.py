@@ -94,7 +94,7 @@ def convert_newspapers_to_csv(files, output_folder, output_file):
         soup.i = i
         soup.filename = filename
 
-        # Set remaining cols
+        # Set cols
         for col in news_col_names:
             if col not in mappings:
                 continue
@@ -161,7 +161,7 @@ def convert_to_csv(input_folder, output_folder, output_file):
         soup.i = i
         soup.filename = filename
 
-        # Set remaining cols
+        # Set cols
         for col in col_names:
             if col not in mappings:
                 continue
