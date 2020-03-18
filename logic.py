@@ -8,6 +8,11 @@ from mappings import mappings
 from mappings import reset
 
 
+def get_mods_files(input_folder):
+    return \
+        sorted([filename for filename in glob.iglob(os.path.join(input_folder, '**', '*.xml'), recursive=True)])
+
+
 def multi_hdg_mkr(pt1, num, pt2):
     """
     Helper method for things like Contributor1_Given, Creator1_Given, etc.
@@ -132,11 +137,9 @@ def convert_to_csv(input_folder, output_folder, output_file):
         'recordOrigin'
     ]
 
-    path = input_folder
-
     # Sort the file names in order to make CSV more organized and also easier
     # for unit tests
-    files = sorted([filename for filename in glob.iglob(os.path.join(path, '*.xml'))])
+    files = get_mods_files(input_folder)
 
     # Check newspaper
     if is_newspaper_issue(files[0]):

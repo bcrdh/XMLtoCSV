@@ -600,7 +600,7 @@ def genre_authority(soup):
     # Must have genre if there is an authority
     _genre = generic_find_elem(soup, 'genre', None)
     if _genre:
-        return _genre.attrs['authority']
+        return _genre.attrs['authority'] if 'authority' in _genre.attrs else None
 
 
 def _type(soup):
