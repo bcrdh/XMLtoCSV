@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"><titleInfo><title>Kelowna Clarion &amp; Okanagan Advocate,  August 4, 1904</title></titleInfo><originInfo><dateIssued encoding="w3cdtf" keyDate="yes">1904-08-04</dateIssued></originInfo><part><detail type="volume"><number>1</number></detail><detail type="issue"><number>2</number></detail></part><identifier type="uuid">288a080f-11b5-4003-9e36-dcaa5b52510f</identifier><identifier type="access">1904-08-04</identifier><recordInfo><recordOrigin>4.3</recordOrigin><recordCreationDate>2019-11-30</recordCreationDate></recordInfo></mods>
+<mods xmlns="http://www.loc.gov/mods/v3" 
+    xmlns:mods="http://www.loc.gov/mods/v3" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <titleInfo>
+        <title>Kelowna Clarion &amp; Okanagan Advocate,  August 4, 1904</title>
+    </titleInfo>
+    <originInfo>
+        <dateIssued encoding="w3cdtf" keyDate="yes">1904-08-04</dateIssued>
+    </originInfo>
+    <part>
+        <detail type="volume">
+            <number>1</number>
+        </detail>
+        <detail type="issue">
+            <number>2</number>
+        </detail>
+    </part>
+    <identifier type="uuid">288a080f-11b5-4003-9e36-dcaa5b52510f</identifier>
+    <identifier type="access">1904-08-04</identifier>
+    <recordInfo>
+        <recordOrigin>4.3</recordOrigin>
+        <recordCreationDate>2019-11-30</recordCreationDate>
+    </recordInfo>
+</mods>

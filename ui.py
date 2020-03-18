@@ -9,9 +9,9 @@ import glob
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
-from logic import convert_to_csv
+from logic import convert_to_csv, get_mods_files
 
 
 def get_version():
@@ -48,52 +48,52 @@ class Ui_MainWindow(object):
         self.fileListWidget = QtWidgets.QListWidget(self.centralwidget)
         self.fileListWidget.setGeometry(QtCore.QRect(10, 290, 441, 231))
         self.fileListWidget.setStyleSheet("background-color: rgb(239, 239, 239);\n"
-"font: 11pt \"Gadugi\";\n"
-"color: rgb(0, 125, 92);")
+                                          "font: 11pt \"Gadugi\";\n"
+                                          "color: rgb(0, 125, 92);")
         self.fileListWidget.setObjectName("fileListWidget")
         self.txtInputPath = QtWidgets.QTextEdit(self.centralwidget)
         self.txtInputPath.setGeometry(QtCore.QRect(10, 170, 351, 31))
         self.txtInputPath.setStyleSheet("background-color: rgb(239, 239, 239);\n"
-"font: 11pt \"Gadugi\";\n"
-"color: rgb(0, 125, 92);")
+                                        "font: 11pt \"Gadugi\";\n"
+                                        "color: rgb(0, 125, 92);")
         self.txtInputPath.setReadOnly(True)
         self.txtInputPath.setObjectName("txtInputPath")
         self.btnBrowseInput = QtWidgets.QPushButton(self.centralwidget)
         self.btnBrowseInput.setGeometry(QtCore.QRect(370, 170, 81, 31))
         self.btnBrowseInput.clicked.connect(self.btn_input_folder_select)
         self.btnBrowseInput.setStyleSheet("background-color: rgb(0, 170, 127);\n"
-"color: rgb(255, 255, 255);\n"
-"border-radius: 5px;\n"
-"font: 11pt \"Gadugi\";")
+                                          "color: rgb(255, 255, 255);\n"
+                                          "border-radius: 5px;\n"
+                                          "font: 11pt \"Gadugi\";")
         self.btnBrowseInput.setObjectName("btnBrowseInput")
         self.btnStart = QtWidgets.QPushButton(self.centralwidget)
         self.btnStart.setGeometry(QtCore.QRect(10, 530, 441, 41))
         self.btnStart.clicked.connect(self.btn_start)
         self.btnStart.setStyleSheet("background-color: rgb(0, 170, 127);\n"
-"color: rgb(255, 255, 255);\n"
-"border-radius: 5px;\n"
-"font: 11pt \"Gadugi\";")
+                                    "color: rgb(255, 255, 255);\n"
+                                    "border-radius: 5px;\n"
+                                    "font: 11pt \"Gadugi\";")
         self.btnStart.setObjectName("btnStart")
         self.btnBrowseOutput = QtWidgets.QPushButton(self.centralwidget)
         self.btnBrowseOutput.setGeometry(QtCore.QRect(370, 210, 81, 31))
         self.btnBrowseOutput.clicked.connect(self.btn_output_folder_select)
         self.btnBrowseOutput.setStyleSheet("background-color: rgb(0, 170, 127);\n"
-"color: rgb(255, 255, 255);\n"
-"border-radius: 5px;\n"
-"font: 11pt \"Gadugi\";")
+                                           "color: rgb(255, 255, 255);\n"
+                                           "border-radius: 5px;\n"
+                                           "font: 11pt \"Gadugi\";")
         self.btnBrowseOutput.setObjectName("btnBrowseOutput")
         self.txtOutputPath = QtWidgets.QTextEdit(self.centralwidget)
         self.txtOutputPath.setGeometry(QtCore.QRect(10, 210, 351, 31))
         self.txtOutputPath.setStyleSheet("background-color: rgb(239, 239, 239);\n"
-"font: 11pt \"Gadugi\";\n"
-"color: rgb(0, 125, 92);")
+                                         "font: 11pt \"Gadugi\";\n"
+                                         "color: rgb(0, 125, 92);")
         self.txtOutputPath.setReadOnly(True)
         self.txtOutputPath.setObjectName("txtOutputPath")
         self.txtOutputFile = QtWidgets.QTextEdit(self.centralwidget)
         self.txtOutputFile.setGeometry(QtCore.QRect(10, 250, 351, 31))
         self.txtOutputFile.setStyleSheet("background-color: rgb(239, 239, 239);\n"
-"font: 11pt \"Gadugi\";\n"
-"color: rgb(0, 125, 92);")
+                                         "font: 11pt \"Gadugi\";\n"
+                                         "color: rgb(0, 125, 92);")
         self.txtOutputFile.setReadOnly(False)
         self.txtOutputFile.setObjectName("txtOutputFile")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -117,7 +117,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Arca - XMLtoCSV 0.1.0"))
-        self.lblName.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:20pt; color:#00aa7f;\">Arca</span><span style=\" font-size:20pt; color:#00aa7f;\"> - XMLtoCSV</span><span style=\" font-size:20pt; color:#00aa7f; vertical-align:super;\">V0.1.0</span></p></body></html>"))
+        self.lblName.setText(_translate("MainWindow",
+                                        "<html><head/><body><p><span style=\" font-size:20pt; color:#00aa7f;\">Arca</span><span style=\" font-size:20pt; color:#00aa7f;\"> - XMLtoCSV</span><span style=\" font-size:20pt; color:#00aa7f; vertical-align:super;\">V0.1.0</span></p></body></html>"))
         self.txtInputPath.setPlaceholderText(_translate("MainWindow", "Select an input folder..."))
         self.btnBrowseInput.setText(_translate("MainWindow", "Browse..."))
         self.btnStart.setText(_translate("MainWindow", "Convert"))
@@ -150,11 +151,16 @@ class Ui_MainWindow(object):
         if selected_folder is not None:
             # Update input path text edit / field
             self.txtInputPath.setText(selected_folder)
+            # Update output file name
+            output_file = selected_folder.replace("\\", os.sep).replace("/", os.sep)
+            output_file = output_file.split(os.sep)[-1]
+            self.txtOutputFile.setText(output_file + ".csv")
             # Clear list widget
             self.fileListWidget.clear()
             # Fill list widget
             self.fileListWidget.addItems(
-                [filename.replace('/', os.sep).replace('\\', os.sep) for filename in glob.iglob(os.path.join(selected_folder, '*.xml'))]
+                [filename.replace('/', os.sep).replace('\\', os.sep) for filename in
+                 get_mods_files(selected_folder)]
             )
 
     def btn_output_folder_select(self):
@@ -171,7 +177,6 @@ class Ui_MainWindow(object):
         Will perform checks and then call logic (convert_to_csv function) from logic.py
         :return:
         """
-        print(str(len(self.txtInputPath.toPlainText())))
         if len(self.txtInputPath.toPlainText()) == 0:
             show_msg('Select an input folder first.', QMessageBox.Critical)
         elif len(self.txtOutputPath.toPlainText()) == 0:
@@ -179,15 +184,24 @@ class Ui_MainWindow(object):
         elif len(self.txtOutputFile.toPlainText()) == 0:
             show_msg('Enter an output file first.', QMessageBox.Critical)
         else:
-            convert_to_csv(self.txtInputPath.toPlainText(), self.txtOutputPath.toPlainText(), self.txtOutputFile.toPlainText())
+            output_file = self.txtOutputFile.toPlainText()
+            if not output_file.endswith('.csv'):
+                output_file = output_file + '.csv'
+            convert_to_csv(
+                self.txtInputPath.toPlainText(),
+                self.txtOutputPath.toPlainText(),
+                output_file
+            )
             show_msg(
-                'Converted files and placed in ' + self.txtOutputPath.toPlainText() + os.sep + self.txtOutputFile.toPlainText(),
-                QMessageBox.Ok
+                'Converted files and placed in ' + self.txtOutputPath.toPlainText() +
+                "/" + self.txtOutputFile.toPlainText(),
+                QMessageBox.Information
             )
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

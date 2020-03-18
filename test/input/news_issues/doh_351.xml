@@ -8,6 +8,8 @@
     </titleInfo>
     <originInfo>
         <dateIssued encoding="w3cdtf" keyDate="yes">1904-07-28</dateIssued>
+        <dateIssued keyDate="yes" point="end">1930-01-01</dateIssued>
+        <dateIssued keyDate="yes" point="start">1930-02-02</dateIssued>
     </originInfo>
     <part>
         <detail type="volume">
